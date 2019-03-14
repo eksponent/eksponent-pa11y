@@ -1,0 +1,24 @@
+{
+  "name": "eksponent-pa11y",
+  "version": "1.0.0",
+  "description": "Exposes pa11y as a single endpoint to run accessibility tests from config submitted as json payload.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.16.1",
+    "json-lint": "^0.1.0",
+    "pa11y": "^5.1.0",
+    "pa11y-ci": "^2.1.1",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "eslint": "^5.15.1",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-node": "^8.0.1",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0"
+  }
+}
