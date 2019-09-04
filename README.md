@@ -22,6 +22,7 @@ Given the configuration file that tests the frontpage of eksponent.com using two
   "level": "error",
   "defaults": {
     "timeout": 50000,
+    "runners": ["axe"],
     "ignore": [],
     "chromeLaunchConfig": {
       "args": ["--no-sandbox"]
@@ -47,6 +48,6 @@ a cURL request will generate a json response with the result of the test
 ```bash
 curl --header "Content-Type: application/json" \
   --request POST \
-  --data '{"standard": "WCAG2AAA","level": "error","defaults": {"timeout": 50000,"ignore": [],"chromeLaunchConfig": {"args": ["--no-sandbox"]}},"urls": [{"url": "https://eksponent.com","viewport": { "width": 320, "height": 480 },"actions": []},{"url": "https://eksponent.com","viewport": { "width": 1024, "height": 768 },"actions": []}]}' \
+  --data '{"standard": "WCAG2AAA","level": "error","defaults": {"runners": ["axe"], "timeout": 50000,"ignore": [],"chromeLaunchConfig": {"args": ["--no-sandbox"]}},"urls": [{"url": "https://eksponent.com","viewport": { "width": 320, "height": 480 },"actions": []},{"url": "https://eksponent.com","viewport": { "width": 1024, "height": 768 },"actions": []}]}' \
   http://192.168.99.100:49160/
 ```

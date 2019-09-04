@@ -15,7 +15,7 @@ function errorHandler (err, request, response, next) {
 }
 
 const mkdirConfig = function (dirPath) {
-    const directory = path.normalize(dirPath);
+    const directory = path.normalize(dirPath)
     const parts = directory.split(path.sep)
 
     for (let i = 1; i <= parts.length; i++) {
