@@ -32,7 +32,7 @@ mkdirConfig(CONFIG_STORAGE)
 
 app.post('/', (request, response) => {
     var uuid = uuidv4()
-    var config = CONFIG_STORAGE + '/' + uuid + ".json"
+    var config = CONFIG_STORAGE + '/' + uuid + '.json'
 
     fs.writeFile(config, JSON.stringify(request.body), (err) => {
         if (err) throw err
