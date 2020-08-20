@@ -3,7 +3,7 @@
 ## Build docker image ##
 
 ````bash
-docker build -t eksponent/pa11y .
+docker build -t eksponent/eksponent-pa11y .
 ````
 
 ## How to use it ##
