@@ -1,57 +1,57 @@
-'use strict';
+const express = require("express");
+const { v4: uuidv4 } = require("uuid");
+const fs = require("fs");
+const path = require("path");
+const spawn = require("await-spawn");
 
-const express = require('express')
-const uuidv4 = require('uuid/v4')
-const fs = require("fs")
-const path = require("path")
-const spawn = require("child_process").spawn
-
-const CONFIG_STORAGE = '.config'
-const PORT = 8080
-const HOST = '0.0.0.0'
-
-function errorHandler (err, request, response, next) {
-    response.status(err.statusCode).send()
-}
+const CONFIG_STORAGE = "./.config";
+const PORT = process.env.PORT || 8080;
+process.env.PUPPETEER_DISABLE_HEADLESS_WARNING = true;
 
 const mkdirConfig = function (dirPath) {
-    const directory = path.normalize(dirPath)
-    const parts = directory.split(path.sep)
+  const directory = path.normalize(dirPath);
+  const parts = directory.split(path.sep);
 
-    for (let i = 1; i <= parts.length; i++) {
-        var part = path.join.apply(null, parts.slice(0, i))
-        if (!fs.existsSync(part)) fs.mkdirSync(part)
+  for (let i = 1; i <= parts.length; i++) {
+    let part = path.join.apply(null, parts.slice(0, i));
+    if (!fs.existsSync(part)) fs.mkdirSync(part);
+  }
+};
+
+const app = express();
+app.use(express.json());
+mkdirConfig(CONFIG_STORAGE);
+
+app.listen(PORT, () => {
+  console.log("Server Listening on PORT:", PORT);
+});
+
+app.post("/", async (request, response) => {
+  let uuid = uuidv4();
+
+  let config = CONFIG_STORAGE + "/" + uuid + ".json";
+
+  fs.writeFile(config, JSON.stringify(request.body), (err) => {
+    if (err) throw err;
+  });
+
+  try {
+    let result = await spawn("./node_modules/.bin/pa11y-ci", [
+      "--json",
+      "--config",
+      config,
+    ]);
+
+    response.send(JSON.parse(result.toString()));
+  } catch (e) {
+    if (e.stderr.length > 0) {
+      response.status(500).send({ error: e.stderr.toString() });
+    } else {
+      response.send(JSON.parse(e.stdout.toString()));
     }
-}
+  }
 
-const app = express()
-app.use(express.json())
-app.use(errorHandler)
-
-mkdirConfig(CONFIG_STORAGE)
-
-app.post('/', (request, response) => {
-    var uuid = uuidv4()
-    var config = CONFIG_STORAGE + '/' + uuid + '.json'
-
-    fs.writeFile(config, JSON.stringify(request.body), (err) => {
-        if (err) throw err
-    });
-
-    var process = spawn('./node_modules/.bin/pa11y-ci', ['--json', '--config', config])
-
-    process.stdout.on('data', (data) => {
-        response.send(data.toString())
-        fs.unlink(config, (err) => {
-            if (err) throw err;
-        })
-    })
-
-    process.stderr.on('data', (data) => {
-        response.status(500).send({error: data.toString()})
-    })
-})
-
-app.listen(PORT, HOST)
-
-console.log(`Running on http://${HOST}:${PORT}`)
+  fs.unlink(config, (err) => {
+    if (err) throw err;
+  });
+});
