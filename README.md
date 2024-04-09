@@ -11,7 +11,7 @@ docker build -t eksponent/eksponent-pa11y .
 By default it exposes the port 8080.
 
 ````bash
-docker run -p 49160:8080 eksponent/pa11y
+docker run -p 49160:8080 eksponent/eksponent-pa11y
 ````
 
 Given the configuration file that tests the frontpage of eksponent.com using two viewports.  
