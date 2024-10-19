@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "await-spawn": "^4.0.2",
-    "express": "^4.19.2",
+    "express": "^4.21.1",
     "json-linter-2": "^1.0.2",
     "pa11y-ci": "github:pa11y/pa11y-ci#79f3449e187288ec93b2152c870d530adde20248",
     "uuid": "^9.0.1"
